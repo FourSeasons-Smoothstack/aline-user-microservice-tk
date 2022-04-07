@@ -16,6 +16,8 @@ pipeline {
                         docker.withRegistry('public.ecr.aws/c0j0y9o1/aline-banking-tk', 'ecr:us-west-1:AWS-TK') {
                     app.push("${env.BUILD_NUMBER}")
                     app.push("latest")
+                        
+                    }
             }
         }
     }
