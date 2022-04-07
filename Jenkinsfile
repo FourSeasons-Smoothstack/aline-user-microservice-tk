@@ -1,6 +1,13 @@
 pipeline {
     agent any
 
+    enviroment {
+        AWS_ACCOUNT_ID="032797834308"
+        AWS_DEFAULT_REGION="us-west-1"
+        IMAGE_REPO_NAME="aline-banking-tk"
+        IMAGE_TAG="latest"
+        REPOSITORY_URI = "${AWS_ACCOUNT_ID}.dkr.ecr.${AWS_DEFAULT_REGION}.amazonaws.com/${IMAGE_REPO_NAME}"
+    }
     stages {
         stage('Build') {
             steps {
@@ -10,16 +17,23 @@ pipeline {
             }
         }
         
+        stage('Logging into AWS ECR') {
+            steps {
+                script {
+                    sh “aws ecr get-login-password — region ${AWS_DEFAULT_REGION} | docker login — username AWS — password-stdin ${AWS_ACCOUNT_ID}.dkr.ecr.${AWS_DEFAULT_REGION}.amazonaws.com”
+                }
+
+            }
+        }
+
         stage('Deploy to AWS ECR'){
             steps{
-                script{
-                        docker.withRegistry('public.ecr.aws/c0j0y9o1/aline-banking-tk', 'ecr:us-west-1:AWS-TK') {
-                    app.push("${env.BUILD_NUMBER}")
-                    app.push("latest")
-                        
-                    }
+                script {
+                    sh "docker tag ${IMAGE_REPO_NAME}:${IMAGE_TAG} ${REPOSITORY_URI}:${IMAGE_TAG}"
+                    sh "docker push ${AWS_ACCOUNT_ID}.dkr.ecr.${AWS_DEFAULT_REGION}.amazonaws.com/${IMAGE_REPO_NAME}:${IMAGE_TAG}"
+                }
             }
         }
     }
 }
-}
+
