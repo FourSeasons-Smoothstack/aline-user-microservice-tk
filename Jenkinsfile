@@ -12,10 +12,13 @@ pipeline {
         
         stage('Deploy to AWS ECR'){
             steps{
-                    sh '''docker login --username AWS 032797834308.dkr.ecr.us-east-1.amazonaws.com --password $(aws ecr get-login-password --region us-east-1)'''
+                withCredentials([string(credentialsID: 'AWS-TK')]) {
+                    sh 'aws ecr-public get-login-password --region us-east-1 | docker login --username AWS --password-stdin public.ecr.aws/c0j0y9o1'
                     sh "docker tag user:latest public.ecr.aws/c0j0y9o1/aline-banking-tk:latest"
                     sh "docker push public.ecr.aws/c0j0y9o1/aline-banking-tk:latest"
                     sh "docker system prune -f --volumes"
+                }
+                    
             }
         }
     }
