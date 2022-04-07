@@ -1,7 +1,7 @@
 pipeline {
     agent any
 
-    enviroment {
+    environment {
         AWS_ACCOUNT_ID="032797834308"
         AWS_DEFAULT_REGION="us-west-1"
         IMAGE_REPO_NAME="aline-banking-tk"
