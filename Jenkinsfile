@@ -13,7 +13,7 @@ pipeline {
             steps {
                 sh "git submodule update --init --recursive"
                 sh "mvn clean package -DskipTests"
-                sh "docker build . -t user:latest"
+                sh "docker build . -t aline-banking-tk:latest"
             }
         }
         
