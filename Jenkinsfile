@@ -1,5 +1,6 @@
 pipeline {
     agent any
+    stages{
 
     stage('Pull Github repo') {
             steps {
