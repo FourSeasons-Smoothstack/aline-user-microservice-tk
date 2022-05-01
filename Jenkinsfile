@@ -1,6 +1,28 @@
 pipeline {
     agent any
 
+    stage('Pull Github repo') {
+            steps {
+                git url: 'https://github.com/FourSeasons-Smoothstack/aline-user-microservice-tk.git', branch: 'develop', credentialsId: 'github-creds-tk'
+            }
+        }
+
+        stage('Scan Sonarqube'){
+            steps{
+                withSonarQubeEnv(installationName: 'SQ-dw'){
+                    sh "mvn clean package sonar:sonar -DskipTests"
+                }
+            }
+        }
+
+        stage('Quality Gate'){
+            steps{
+                timeout(time: 2, unit: 'MINUTES'){
+                    waitForQualityGate abortPipeline: true
+                }
+            }
+        }
+
     stages {
         stage('Build') {
             steps {
@@ -23,6 +45,8 @@ pipeline {
                 script {
                     sh "docker tag aline-user-tk:latest 032797834308.dkr.ecr.us-east-1.amazonaws.com/aline-user-tk:latest"
                     sh "docker push 032797834308.dkr.ecr.us-east-1.amazonaws.com/aline-user-tk:latest"
+                    sh "docker system prune -af"
+                    sh "docker volume prune -f"
                 }
             }
         }
