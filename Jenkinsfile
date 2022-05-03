@@ -15,7 +15,7 @@ pipeline {
             steps{
                 withSonarQubeEnv(installationName: 'SQ-dw'){
                     sh "git submodule update --init --recursive"
-                    sh "mvn clean package sonar:sonar -DskipTests"
+                    sh "mvn clean verify sonar:sonar -DskipTests"
                 }
             }
         }
@@ -30,7 +30,7 @@ pipeline {
         stage('Build') {
             steps {
                 sh "git submodule update --init --recursive"
-                sh "mvn clean package -DskipTests"
+                sh "mvn clean install -DskipTests"
                 sh "docker build -t aline-user-tk:latest ."
             }
         }
