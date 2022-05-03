@@ -11,6 +11,7 @@ pipeline {
         stage('Scan Sonarqube'){
             steps{
                 withSonarQubeEnv(installationName: 'SQ-dw'){
+                    sh "git submodule update --init --recursive"
                     sh "mvn clean package sonar:sonar -DskipTests"
                 }
             }
