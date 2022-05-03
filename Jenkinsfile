@@ -28,7 +28,7 @@ pipeline {
             steps {
                 sh "git submodule update --init --recursive"
                 sh "mvn clean package -DskipTests"
-                sh "docker build -t aline-user-tk ."
+                sh "docker build -t aline-user-tk:latest ."
             }
         }
         
