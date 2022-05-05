@@ -1,8 +1,5 @@
 # syntax=docker/dockerfile:1
-FROM alpine
-
-RUN apk update && \
-    apk add openjdk11-jre
+FROM openjdk:8-alpine
 
 EXPOSE 8070
 

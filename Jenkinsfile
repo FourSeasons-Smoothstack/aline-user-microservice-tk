@@ -5,12 +5,6 @@ pipeline {
     }
     stages{
 
-    stage('Pull Github repo') {
-            steps {
-                git url: 'https://github.com/FourSeasons-Smoothstack/aline-user-microservice-tk.git', branch: 'develop', credentialsId: 'github-creds-tk'
-            }
-        }
-
         stage('Scan Sonarqube'){
             steps{
                 withSonarQubeEnv(installationName: 'SQ-dw'){
