@@ -9,7 +9,7 @@ pipeline {
             steps{
                 withSonarQubeEnv(installationName: 'SQ-dw'){
                     sh "git submodule update --init --recursive"
-                    sh "mvn clean verify sonar:sonar -DskipTests"
+                    sh "mvn clean verify sonar:sonar"
                 }
             }
         }
