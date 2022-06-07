@@ -51,7 +51,7 @@ pipeline {
         stage('Deploy to Artifactory') {
             steps {
                 script {
-                    sh "sh "curl -X PUT -u ${ART_USER}:${ART_PASS} -T bank-microservice/target/*.jar '${ART_URL}:8081/artifactory/${ART_MAVEN_REPO}/aline-bank.jar'""
+                    sh "curl -X PUT -u ${ART_USER}:${ART_PASS} -T bank-microservice/target/*.jar '${ART_URL}:8081/artifactory/${ART_MAVEN_REPO}/aline-bank.jar'"
                 }
             }
         }
