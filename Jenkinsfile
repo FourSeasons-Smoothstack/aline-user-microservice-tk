@@ -2,25 +2,29 @@ pipeline {
     agent any
     environment {
         AWS_ID = credentials('AWS-ID')
+        ART_USER = credentials('ART_USER')
+        ART_PASS = credentials('ART_PASS')
+        ART_URL = credentials('ART_URL')
+        ART_MAVEN_REPO = credentials('ART_MAVEN_REPO')
     }
     stages{
 
-        stage('Scan Sonarqube'){
-            steps{
-                withSonarQubeEnv(installationName: 'SQ-dw'){
-                    sh "git submodule update --init --recursive"
-                    sh "mvn clean verify sonar:sonar"
-                }
-            }
-        }
+        // stage('Scan Sonarqube'){
+        //     steps{
+        //         withSonarQubeEnv(installationName: 'SQ-dw'){
+        //             sh "git submodule update --init --recursive"
+        //             sh "mvn clean verify sonar:sonar"
+        //         }
+        //     }
+        // }
 
-        stage('Quality Gate'){
-            steps{
-                timeout(time: 2, unit: 'MINUTES'){
-                    waitForQualityGate abortPipeline: true
-                }
-            }
-        }
+        // stage('Quality Gate'){
+        //     steps{
+        //         timeout(time: 2, unit: 'MINUTES'){
+        //             waitForQualityGate abortPipeline: true
+        //         }
+        //     }
+        // }
         stage('Build') {
             steps {
                 sh "git submodule update --init --recursive"
